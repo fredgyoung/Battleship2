@@ -10,23 +10,35 @@ class App:
 
     def place_ships(self):
         for ship_length in self.fleet:
-            direction = "EW" if randint(0, 1) == 0 else "NS"
+            direction = "H" if randint(0, 1) == 0 else "V"
             # print(f"{ship_length} {direction}")
 
             if direction == "EW":
-                self.find_east_west_space(ship_length)
+                self.find_horizontal_space(ship_length)
             else:
-                self.find_north_south_space(ship_length)
+                self.find_vertical_space(ship_length)
 
-    def find_east_west_space(self, ship_length):
+    def find_horizontal_space(self, ship_length: int):
         row = randint(0, SIZE-1)
         start_col = randint(0, SIZE-ship_length)
         end_col = start_col + ship_length - 1
 
-    def find_north_south_space(self, ship_length):
+    def find_vertical_space(self, ship_length: int):
         col = randint(0, SIZE-1)
         start_row = randint(0, SIZE-ship_length)
         end_row = start_row + ship_length - 1
+
+    def ship_will_fit_in_row(self, row: int, start_col: int, ship_length: int) -> bool:
+        for col in range(start_col, start_col+ship_length):
+            if self.board[row][col] != 0:
+                return False
+        return True
+
+    def ship_will_fit_in_col(self, col: int, start_row: int, ship_length: int) -> bool:
+        for row in range(start_row, start_row+ship_length):
+            if self.board[row][col] != 0:
+                return False
+        return True
 
     def print_board(self):
         for i in range(SIZE):
